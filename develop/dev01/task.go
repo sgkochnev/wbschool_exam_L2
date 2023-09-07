@@ -1,5 +1,7 @@
 package main
 
+import "reflect"
+
 /*
 === Базовая задача ===
 
@@ -13,5 +15,5 @@ package main
 */
 
 func main() {
-
+reflect
 }
