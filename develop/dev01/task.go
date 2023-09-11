@@ -1,5 +1,13 @@
 package main
 
+import (
+	"fmt"
+	"log"
+	"time"
+
+	"github.com/beevik/ntp"
+)
+
 /*
 === Базовая задача ===
 
@@ -12,6 +20,17 @@ package main
 Программа должна проходить проверки go vet и golint.
 */
 
-func main() {
+const address = "0.beevik-ntp.pool.ntp.org"
 
+// Time returns the current, corrected local time using information returned from the remote NTP server. On error, Time returns the uncorrected local system time.
+func Time() (time.Time, error) {
+	return ntp.Time(address)
+}
+
+func main() {
+	t, err := Time()
+	if err != nil {
+		log.Fatalln(err)
+	}
+	fmt.Println(t.Format("2006-01-02 15:04:05.000"))
 }
