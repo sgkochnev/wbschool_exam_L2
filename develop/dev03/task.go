@@ -128,18 +128,22 @@ func writeData(out *os.File, data *Data) {
 	writer.Flush()
 }
 
+// Data contains text of a file.
 type Data struct {
 	text []string
 }
 
+// Sort sorts the data using a custom comparison function.
 func (d *Data) Sort(cmp func(a, b string) int) {
 	slices.SortFunc(d.text, cmp)
 }
 
+// IsSorted checks if the data is sorted using a custom comparison function.
 func (d *Data) IsSorted(cmp func(a, b string) int) bool {
 	return slices.IsSortedFunc(d.text, cmp)
 }
 
+// DeleteRepeatedLines deletes repeated lines using a custom comparison function.
 func (d *Data) DeleteRepeatedLines(col *int, sep string) {
 	var s1, s2 string
 
