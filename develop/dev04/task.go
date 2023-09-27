@@ -1,5 +1,11 @@
 package main
 
+import (
+	"fmt"
+	"slices"
+	"strings"
+)
+
 /*
 === Поиск анаграмм по словарю ===
 
@@ -19,6 +25,50 @@ package main
 Программа должна проходить все тесты. Код должен проходить проверки go vet и golint.
 */
 
-func main() {
+func findAnagrams(words []string) map[string][]string {
+	keys := make(map[string]string)
+	vals := make(map[string]map[string]struct{})
 
+	for _, word := range words {
+		word = strings.ToLower(word)
+		k := []rune(word)
+		slices.Sort(k)
+
+		key, ok := keys[string(k)]
+		if !ok {
+			keys[string(k)] = word
+			key = word
+		}
+
+		if _, ok := vals[key]; !ok {
+			vals[key] = make(map[string]struct{})
+		}
+		vals[key][word] = struct{}{}
+	}
+
+	res := make(map[string][]string)
+
+	for key, val := range vals {
+		if len(val) > 1 {
+
+			sl := make([]string, 0, len(val))
+			for k := range val {
+				sl = append(sl, k)
+			}
+			slices.Sort(sl)
+
+			res[key] = sl
+		}
+	}
+
+	return res
+}
+
+func main() {
+	words := []string{"тяпка", "пятак", "Пятка", "Пятка", "слиток", "листок", "Столик", "свисток", "рулетка"}
+
+	m := findAnagrams(words)
+	for k, v := range m {
+		fmt.Println(k, v)
+	}
 }
